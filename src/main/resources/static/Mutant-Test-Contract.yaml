@@ -1,0 +1,86 @@
+openapi: 3.0.3
+info:
+  title: Mutant Recruiter
+  version: 1.0.0
+servers:
+- url: "@serverUrlEndpoint/"
+  x-amazon-apigateway-endpoint-configuration:
+    disableExecuteApiEndpoint: true
+tags:
+  - name: api-mutant
+    description: Everything about your Pets
+paths:
+  /mutant:
+    post:
+      tags:
+        - api-mutant
+      summary: Verify if the human is a mutant
+      operationId: verifyMutant
+      requestBody:
+        description: Send a DNA from a human
+        content:
+          application/json:
+            schema:
+              type: array
+              items: 
+                type: string
+              example: ["ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"]
+        required: true
+      responses:
+        '200':
+          description: DNA is from a Mutant
+        '403':
+          description: DNA is from a No Mutant
+        '400':
+          description: DNA is invalid
+      x-amazon-apigateway-request-validator: validate-body-header
+      x-amazon-apigateway-integration:
+          type: http
+          responses:
+            200:
+              statusCode: "200"
+            403:
+              statusCode: "403"
+            400:
+              statusCode: "400"
+          httpMethod: POST
+  /stats:
+    get:
+      tags:
+        - api-mutant
+      summary: Get all humans in the database
+      operationId: GetAllStats
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Stats'
+      x-amazon-apigateway-request-validator: validate-body-header
+      x-amazon-apigateway-integration:
+          type: http
+          responses:
+            200:
+              statusCode: "200"
+          httpMethod: GET
+components:
+  schemas:
+    Stats:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        countMutantDNA:
+          type: integer
+          example: 40
+        countHumanDNA:
+          type: integer
+          example: 100
+        ratio:
+          type: number
+          format: float
+          example: 0.4
