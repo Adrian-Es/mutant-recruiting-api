@@ -7,9 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
@@ -21,7 +21,7 @@ import com.adrianescurra.challenge.services.HumanService;
 @TestPropertySource(locations="classpath:application-test.properties")
 public class StatsApiControllerTest {
 	
-	@Mock
+	@MockBean
     private HumanService humanService;
 	
 	@Autowired
