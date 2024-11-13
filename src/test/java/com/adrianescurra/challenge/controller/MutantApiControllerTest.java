@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 
+import com.adrianescurra.challenge.model.DNA;
 import com.adrianescurra.challenge.services.DNAService;
 import com.adrianescurra.challenge.services.HumanService;
 
@@ -32,10 +33,13 @@ public class MutantApiControllerTest {
     @Test
     void testVerifyMutantBadRequestInvalidDNA() {
         List<String> invalidDnaSequence = List.of("ATGC", "CGTA", "GGAT");
-
+  
+        DNA dna = new DNA();
+        dna.setDna(invalidDnaSequence);
+        
         when(dnaService.isValidDNA(invalidDnaSequence)).thenReturn(false);
 
-        ResponseEntity<Void> response = mutantApiController.verifyMutant(invalidDnaSequence);
+        ResponseEntity<Void> response = mutantApiController.verifyMutant(dna);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
@@ -49,11 +53,14 @@ public class MutantApiControllerTest {
         	    "AGAAGG",
         	    "CGCCTA",
         	    "TCACTG");
+        
+        DNA dna = new DNA();
+        dna.setDna(nonMutantDnaSequence);
 
         when(dnaService.isValidDNA(nonMutantDnaSequence)).thenReturn(true);
         when(humanService.isMutant(nonMutantDnaSequence)).thenReturn(false);
 
-        ResponseEntity<Void> response = mutantApiController.verifyMutant(nonMutantDnaSequence);
+        ResponseEntity<Void> response = mutantApiController.verifyMutant(dna);
 
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
@@ -61,11 +68,14 @@ public class MutantApiControllerTest {
     @Test
     void testVerifyMutantOkIsMutant() {
         List<String> mutantDnaSequence = List.of("ATGCGC", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG");
-
+        
+        DNA dna = new DNA();
+        dna.setDna(mutantDnaSequence);
+        
         when(dnaService.isValidDNA(mutantDnaSequence)).thenReturn(true);
         when(humanService.isMutant(mutantDnaSequence)).thenReturn(true);
 
-        ResponseEntity<Void> response = mutantApiController.verifyMutant(mutantDnaSequence);
+        ResponseEntity<Void> response = mutantApiController.verifyMutant(dna);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }

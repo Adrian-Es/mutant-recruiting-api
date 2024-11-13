@@ -5,13 +5,13 @@
  */
 package com.adrianescurra.challenge.controller;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.adrianescurra.challenge.model.DNA;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,7 +27,7 @@ public interface MutantApi {
     /**
      * POST /mutant : Verify if the human is a mutant
      *
-     * @param requestBody Send a DNA from a human (required)
+     * @param DNA Send a DNA from a human (required)
      * @return DNA is from a Mutant (status code 200)
      *         or DNA is from a No Mutant (status code 403)
      *         or DNA is invalid (status code 400)
@@ -48,7 +48,8 @@ public interface MutantApi {
         consumes = { "application/json" }
     )
     ResponseEntity<Void> verifyMutant(
-        @Parameter(name = "request_body", description = "Send a DNA from a human", required = true)@RequestBody List<String> requestBody
+        @Parameter(name = "DNA", description = "Send a DNA from a human", required = true) @RequestBody DNA DNA
     );
 
 }
+	

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
+import com.adrianescurra.challenge.model.DNA;
 import com.adrianescurra.challenge.services.DNAService;
 import com.adrianescurra.challenge.services.HumanService;
 
@@ -19,9 +20,9 @@ public class MutantApiController implements MutantApi {
 	private DNAService dnaService;
 
 	@Override
-	public ResponseEntity<Void> verifyMutant(List<String> dnaSequence) {
-
-		if (!dnaService.isValidDNA(dnaSequence))
+	public ResponseEntity<Void> verifyMutant(DNA DNA) {
+		List<String> dnaSequence = DNA.getDna();
+		if (!dnaService.isValidDNA(dnaSequence) || dnaSequence == null)
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 
 		boolean isMutant = humanService.isMutant(dnaSequence);
