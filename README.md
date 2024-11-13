@@ -27,7 +27,11 @@ Las siguientes variables de entorno
 Hay que navegar a la raíz del proyecto y ejecutar el siguiente comando:
 
 ```
-mvn spring-boot:run
+mvn install
+```
+y cuando finalice, ejecutar:
+```
+java -jar target\challenge-0.0.1-SNAPSHOT.jar
 ```
 
 El proyecto se ejecuta por defecto en
